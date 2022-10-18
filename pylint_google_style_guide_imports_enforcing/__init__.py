@@ -24,7 +24,10 @@ class AlphabeticallySortedImports(BaseChecker):
     excluded_modules = ['typing', 'typing_extensions', 'six.moves']
 
     def visit_importfrom(self, node):
-        imported = node.do_import_module()
+        try:
+            imported = node.do_import_module()
+        except astroid.AstroidError:
+            return
 
         if imported.name in self.excluded_modules:
             return
